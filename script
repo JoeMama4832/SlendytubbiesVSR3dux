@@ -1,0 +1,202 @@
+local Flux = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/fluxlib.txt")()
+
+local win = Flux:Window("Advice's Scripts", "Slendytubbies", Color3.fromRGB(255, 110, 48), Enum.KeyCode.LeftControl)
+local tab = win:Tab("player", "http://www.roblox.com/asset/?id=6023426915")
+tab:Label("Join the Discord! .gg/kq64NbA2ru")
+tab:Line()
+tab:Slider("Walkspeed (NOT WORKING)", "Makes you faster.", 0, 200,16, function(t)
+
+end)
+tab:Button("Increase Hitbox (MONSTER ONLY)", "Increases your hitbox as a monster.", function ()
+	local playerfolder = workspace.game.Players
+
+	for i,v in pairs(workspace.game.Players:GetChildren()) do
+		local hbox = v:FindFirstChild("hboxExtend")
+    	hbox.Transparency = 0.9
+    	hbox.CanCollide = false
+    	hbox.Size = Vector3.new(7,7,7)
+	end
+
+	playerfolder.ChildAdded:Connect(function(child)
+		local hbox = child:WaitForChild("hboxExtend")
+    	hbox.Transparency = 0.9
+    	hbox.CanCollide = false
+    	hbox.Size = Vector3.new(7,7,7)
+	end)
+end)
+tab:Toggle("Infinite Jump (just like flying)", "Allows you to jump infinitely times", false, function (t)
+	local InfiniteJumpEnabled = false
+	if t then
+	print("inf jump enabled")
+	InfiniteJumpEnabled = true
+	game:GetService("UserInputService").JumpRequest:connect(function()
+		if InfiniteJumpEnabled then
+			game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+		end
+	end)
+	else
+	print("inf jump disabled")
+	InfiniteJumpEnabled = false
+	game:GetService("UserInputService").JumpRequest:connect(function()
+		if InfiniteJumpEnabled then
+			game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+		end
+	end)
+	end
+end)
+local tab2 = win:Tab("misc", "http://www.roblox.com/asset/?id=6022668888")
+tab2:Button("Collect all Custards (will take a few seconds)", "Must be in game.", function()
+    for i,v in pairs(workspace.game.gameCustard:GetChildren()) do
+        firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
+        task.wait(0.7)
+        firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 1)
+    end
+end)
+tab2:Button("Remove Lasers", "Removes the lasers in Training Maze.", function ()
+	for i,v in pairs(workspace.Maps.NoAttackThrough.TrainingMaze:GetChildren()) do
+		if v.Name == "AntiSpawnCampLaser" then
+			v:Destroy()
+		end
+	end
+end)
+tab2:Button("Unlock Camera", "Allows you to play in 3rd Person View.", function ()
+	game:GetService('Players').LocalPlayer.CameraMode = 'Classic'
+	game.Players.LocalPlayer.CameraMaxZoomDistance = 100
+end)
+tab2:Button("Remove Monster Vision", "Disables the vision while playing as a monster", function ()
+	game.Lighting:FindFirstChild("MonsterVision").Enabled = false
+end)
+tab2:Button("Remove Player Vision", "Disables the vision while playing.", function ()
+	game.Lighting:FindFirstChild("PlayerVision").Enabled = false
+end)
+tab2:Button("Full Brightness", "Self explainable", function ()
+	loadstring(game:HttpGet("https://pastebin.com/raw/06iG6YkU", true))()
+end)
+tab2:Button("Custard ESP (IMPROVED)", "Shows you where all of the custards are.", function ()
+	local custards = workspace.game.gameCustard
+
+	for __,v in pairs(workspace.game.gameCustard:GetChildren()) do
+        if v:IsA("Part") then
+            local a = Instance.new("BillboardGui",v)
+            a.Size = UDim2.new(1,0, 1,0)
+            a.Name = "A"
+            a.AlwaysOnTop = true
+            local b = Instance.new("Frame",a)
+            b.Size = UDim2.new(1,0, 1,0)
+            b.BackgroundTransparency = 1
+            b.BorderSizePixel = 0
+            local c = Instance.new("TextLabel",b)
+            c.Text = "Custard"
+            c.TextColor3 = Color3.fromRGB(255,192,203)
+            c.Size = UDim2.new(1,0, 1,0)
+            c.BackgroundTransparency = 1
+            c.BorderSizePixel = 0
+        end
+    end
+
+	custards.ChildAdded:Connect(function(child)
+		local a = Instance.new("BillboardGui",child)
+        a.Size = UDim2.new(1,0, 1,0)
+        a.Name = "A"
+        a.AlwaysOnTop = true
+        local b = Instance.new("Frame",a)
+        b.Size = UDim2.new(1,0, 1,0)
+        b.BackgroundTransparency = 1
+        b.BorderSizePixel = 0
+        local c = Instance.new("TextLabel",b)
+        c.Text = "Custard"
+        c.TextColor3 = Color3.fromRGB(255,192,203)
+        c.Size = UDim2.new(1,0, 1,0)
+        c.BackgroundTransparency = 1
+        c.BorderSizePixel = 0
+	end)
+end)
+tab2:Button("Monster ESP (IMPROVED)", "Shows you where the monsters are.", function ()
+    local monsters = workspace.game.Monsters
+
+	for __,v in pairs(workspace.game.Monsters:GetChildren()) do
+		if v:IsA("Model") then
+			local a = Instance.new("BillboardGui",v.hboxExtend)
+			a.Size = UDim2.new(1,0, 1,0)
+			a.Name = "A"
+			a.AlwaysOnTop = true
+			local b = Instance.new("Frame",a)
+			b.Size = UDim2.new(1,0, 1,0)
+			b.BackgroundTransparency = 1
+			b.BorderSizePixel = 0
+			local c = Instance.new("TextLabel",b)
+			c.Text = "Monster ".."(@"..v.Name..")"
+			c.TextColor3 = Color3.fromRGB(255,0,0)
+			c.Size = UDim2.new(1,0, 1,0)
+			c.BackgroundTransparency = 1
+			c.BorderSizePixel = 0
+		end
+    end
+
+	monsters.ChildAdded:Connect(function(child)
+		wait(0.5)
+		local a = Instance.new("BillboardGui",child.hboxExtend)
+		a.Size = UDim2.new(1,0, 1,0)
+		a.Name = "A"
+		a.AlwaysOnTop = true
+		local b = Instance.new("Frame",a)
+		b.Size = UDim2.new(1,0, 1,0)
+		b.BackgroundTransparency = 1
+		b.BorderSizePixel = 0
+		local c = Instance.new("TextLabel",b)
+		c.Text = "Monster ".."(@"..child.Name..")"
+		c.TextColor3 = Color3.fromRGB(255,0,0)
+		c.Size = UDim2.new(1,0, 1,0)
+		c.BackgroundTransparency = 1
+		c.BorderSizePixel = 0
+	end)
+end)
+tab2:Button("Player ESP (IMPROVED)", "Shows you where the current players are.", function ()
+	local players = workspace.game.Players
+
+	for __,v in pairs(workspace.game.Players:GetChildren()) do
+		if v:IsA("Model") then
+			local a = Instance.new("BillboardGui",v.hboxExtend)
+			a.Size = UDim2.new(1,0, 1,0)
+			a.Name = "A"
+			a.AlwaysOnTop = true
+			local b = Instance.new("Frame",a)
+			b.Size = UDim2.new(1,0, 1,0)
+			b.BackgroundTransparency = 1
+			b.BorderSizePixel = 0
+			local c = Instance.new("TextLabel",b)
+			c.Text = "Player ".."(@"..v.Name..")"
+			c.TextColor3 = Color3.fromRGB(255,165,0)
+			c.Size = UDim2.new(1,0, 1,0)
+			c.BackgroundTransparency = 1
+			c.BorderSizePixel = 0
+		end
+    end
+
+	players.ChildAdded:Connect(function(child)
+		wait(0.5)
+		local a = Instance.new("BillboardGui",child.hboxExtend)
+		a.Size = UDim2.new(1,0, 1,0)
+		a.Name = "A"
+		a.AlwaysOnTop = true
+		local b = Instance.new("Frame",a)
+		b.Size = UDim2.new(1,0, 1,0)
+		b.BackgroundTransparency = 1
+		b.BorderSizePixel = 0
+		local c = Instance.new("TextLabel",b)
+		c.Text = "Player ".."(@"..child.Name..")"
+		c.TextColor3 = Color3.fromRGB(255,165,0)
+		c.Size = UDim2.new(1,0, 1,0)
+		c.BackgroundTransparency = 1
+		c.BorderSizePixel = 0
+	end)
+end)
+tab2:Line()
+tab2:Button("Admin Detector ( DOESNT REALLY WORK )", "Automatically kicks you if an admin joins.", function ()
+    print("!")
+    local admin = workspace.AdminSpawned
+
+    admin.ChildAdded:Connect(function ()
+        game.Players.LocalPlayer:Kick("An admin has joined and the script has kicked you to prevent getting banned.")
+    end)
+end)
